@@ -3,30 +3,45 @@ import pymel.core as pm
 import constants
 
 
-def create_turntable_lights():
-    lgt_scale = 50
-
+def create_turntable_lights(grp_name=constants.LIGHT_GRP, key_intensity=1, fill_intensity=.5, back_intensity=.2,
+                            lgt_scale=50):
+    """ Creates a key, fill, and back light, as well as, a group to hold them
+    Args:
+        grp_name(str): the name of the group for the lights
+        key_intensity(float): key light intensity
+        fill_intensity(float): fill light intensity
+        back_intensity(float): back light intensity
+        lgt_scale(float): scale of lights
+    Returns:
+        turntable_light_grp(str): the name of the turntable light group
+    """
     print("Setting up key light")
-    cmds.directionalLight(name=constants.KEY, rotation=(-30, -45, 0))
+    cmds.directionalLight(name=constants.KEY, intensity=key_intensity, rotation=(-30, -45, 0))
     cmds.xform(constants.KEY, scale=(lgt_scale, lgt_scale, lgt_scale), translation=(-150, 250, 150))
 
     print("Setting up fill light")
-    cmds.directionalLight(name=constants.FILL, intensity=.5, rotation=(0, 45, 0))
+    cmds.directionalLight(name=constants.FILL, intensity=fill_intensity, rotation=(0, 45, 0))
     cmds.xform(constants.FILL, scale=(lgt_scale, lgt_scale, lgt_scale), translation=(150, 125, 150))
 
     print("Setting up back light")
-    cmds.directionalLight(name=constants.BACK, intensity=.2, rotation=(-15, -135, 0))
+    cmds.directionalLight(name=constants.BACK, intensity=back_intensity, rotation=(-15, -135, 0))
     cmds.xform(constants.BACK, scale=(lgt_scale, lgt_scale, lgt_scale), translation=(-150, 250, -150))
 
-    turntable_light_grp = cmds.group(constants.KEY, constants.FILL, constants.BACK, name=constants.LIGHT_GRP)
+    turntable_light_grp = cmds.group(constants.KEY, constants.FILL, constants.BACK, name=grp_name)
     print("Created turntable lights : {}".format(turntable_light_grp))
     return turntable_light_grp
 
 
-def frame_camera_to_asset(cam_shape=None):
+def frame_camera_to_asset(camera_node=None):
+    """ Frames the camera to the geometry in the scene and creates a control
+    Args:
+        camera_node(str): name of the camera node
+    Returns:
+        turntable_ctrl(str): name of the turntable control
+    """
     meshes = cmds.ls(type="mesh")
     cmds.select(meshes)
-    pm.viewFit(cam_shape, all=False, fitFactor=.98)
+    pm.viewFit(camera_node, all=False, fitFactor=.98)
 
     # Get's Camera's translate Z and Y
     cam_translateZ = cmds.getAttr(camera_node + ".translateZ")
@@ -38,11 +53,15 @@ def frame_camera_to_asset(cam_shape=None):
     # Scales the control tot he Camera's translate z and parent constrains the Camera
     cmds.scale(cam_translateZ, cam_translateZ, cam_translateZ, turntable_ctrl[0])
     cmds.move(0, cam_translateY, 0, turntable_ctrl[0])
-    cmds.parentConstraint(turntable_ctrl, camera_nde, maintainOffset=True)
+    cmds.parentConstraint(turntable_ctrl, camera_node, maintainOffset=True)
     return turntable_ctrl
 
 
 def add_cam_ring_animation(control_ring):
+    """ Animates the turntable control
+    Args:
+        control_ring(str): name of the control to animate
+    """
     cmds.setKeyframe(control_ring, attribute="rotate", time=constants.START_TIME)
     cmds.setAttr(control_ring[0] + ".rotateY", 360)
     cmds.setKeyframe(control_ring, attribute="rotate", time=constants.END_TIME * .5)
@@ -50,6 +69,10 @@ def add_cam_ring_animation(control_ring):
 
 
 def add_lgt_animation(lgt_grp):
+    """ Animates the group of lights
+    Args:
+        lgt_grp(str): name of the group of lights to animate
+    """
     cmds.setKeyframe(lgt_grp, attribute="rotate", time=constants.END_TIME * .5)
     cmds.setAttr(lgt_grp + ".rotateY", 360)
     cmds.setKeyframe(lgt_grp, attribute="rotate", time=constants.END_TIME)
@@ -57,6 +80,11 @@ def add_lgt_animation(lgt_grp):
 
 
 def create_turntable(start_frame=constants.START_TIME, end_frame=constants.END_TIME):
+    """ Creates a turntable with basic 3 point lighting
+    Args:
+        start_frame(int): set the start frame, default is 1
+        end_frame(int):  set the end frame, default is 720
+    """
     print("Creating {}".format(constants.TURNTABLE_CAM))
     cmds.camera()
     new_camera = cmds.ls(selection=True)

@@ -9,8 +9,8 @@ def select_keyed():
         child_node = cmds.nodeType(children[0])
 
         if not children:
-            continue
-        elif child_node == "camera" or child_node == "nurbsCurve":
+            print("{} doesn't have a child object".format(transform_node))
+        if child_node == "camera" or child_node == "nurbsCurve":
             keyed = cmds.keyframe(transform_node, query=True, keyframeCount=True)
             if keyed > 0:
                 cmds.select(transform_node, add=True)
