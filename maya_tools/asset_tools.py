@@ -2,9 +2,14 @@ import maya.cmds as cmds
 import os.path
 
 
-def build_structure():
-    # gets the Maya file name
-    scene_name = os.path.basename(cmds.file(q=True, sn=True))
+def build_structure(grp_name=None):
+    """ Build asset structure based on file name if a scene_name is not given
+    Args:
+        grp_name(str): name of the parent group, defaults to the file name if None
+    """
+    # if package name is not defined, will name it based on the file name
+    if not grp_name:
+        grp_name = os.path.basename(cmds.file(q=True, sn=True))
 
     # desired list of groups we want to create
     asset_groups = [
@@ -19,7 +24,7 @@ def build_structure():
         cmds.rename(asset_group)
 
     # groups our created groups and names the group based on the scene
-    cmds.group(scene_name[:-3], asset_groups)
+    cmds.group(grp_name[:-3], asset_groups)
 
 def compare_shaders():
     shader_groups = cmds.ls(type="shadingEngine")
@@ -27,8 +32,7 @@ def compare_shaders():
     for i in range(0, len(shader_groups)):
         for j in range(i + 1, len(shader_groups)):
             comparison = cmds.shadingNetworkCompare(shader_groups[i], shader_groups[j])
-            shader_compare_result = cmds.shadingNetworkCompare(comparison, query=True, equivalent=True)
-            if shader_compare_result == True:
+            if not cmds.shadingNetworkCompare(comparison, query=True, equivalent=True):
                 print(cmds.shadingNetworkCompare(comparison, query=True, network1=True))
 
 def check_meshes_without_shaders():
@@ -58,7 +62,6 @@ def check_unassigned_shaders():
                 unassigned_shaders.append(shading_group)
 
     shaders = list(dict.fromkeys(unassigned_shaders))
-    shaders_to_remove = []
 
     for shader in shaders:
         if shader == "initialParticleSE":
@@ -66,45 +69,4 @@ def check_unassigned_shaders():
         elif shader == "initialShadingGroup":
             continue
         else:
-            shaders_to_remove.append(shader)
-
-    for sg in shaders_to_remove:
-        print(sg)
-
-def find_instances(*args):
-    if len(cmds.ls(selection=True)) > 0:
-        instances = []
-
-        selection_shape = cmds.listRelatives(cmds.ls(selection=True))
-        cmds.select(clear=True)
-
-        for shape in selection_shape:
-            if len(cmds.listRelatives(shape, allParents=True)) > 1:
-                instances.append(shape)
-        return instances
-    else:
-        instances = []
-        shape_list = cmds.ls(type="mesh")
-
-        for shape in shape_list:
-            parents = cmds.listRelatives(shape, allParents=True)
-
-            if len(parents) > 1:
-                for p in parents:
-                    instances.append(p)
-        return instances
-
-def uninstance():
-    instances = find_instances()
-
-    for instance in instances:
-        dupe = cmds.duplicate(instance)
-        cmds.delete(instance)
-        cmds.rename(dupe, instance)
-
-def select_instances():
-    instances = find_instances()
-    cmds.select(clear=True)
-    for instance in instances:
-        cmds.select(instance, add=True)
-        
+            print(shader)
