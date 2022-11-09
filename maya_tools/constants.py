@@ -1,4 +1,8 @@
-
+ASSET_GROUPS = [
+    "Meshes",
+    "Rig",
+    "Lights"
+]
 TURNTABLE_CAM = "Turntable_CAM"
 
 TURNTABLE_CTRL = "Turntable_ctrl"

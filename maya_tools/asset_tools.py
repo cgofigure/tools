@@ -1,6 +1,6 @@
 import maya.cmds as cmds
 import os.path
-
+import constants
 
 def build_structure(grp_name=None):
     """ Build asset structure based on file name if a scene_name is not given
@@ -12,11 +12,7 @@ def build_structure(grp_name=None):
         grp_name = os.path.basename(cmds.file(q=True, sn=True))
 
     # desired list of groups we want to create
-    asset_groups = [
-        "Meshes",
-        "Rig",
-        "Lights"
-    ]
+    asset_groups = constants.ASSET_GROUPS
 
     # creates the groups and names them
     for asset_group in asset_groups:
@@ -25,6 +21,18 @@ def build_structure(grp_name=None):
 
     # groups our created groups and names the group based on the scene
     cmds.group(grp_name[:-3], asset_groups)
+
+def export_open():
+    file_path = cmds.file(sceneName=True, query=True)
+    file_name = os.path.basename(file_path)[:-3]
+
+    if not cmds.objExists(file_name):
+        print("Nothing to export, no object named : {}".format(file_name))
+    else:
+        cmds.select(file_name)
+
+    cmds.file(file_path, type="mayaAscii", exportSelected=True, force=True)
+    cmds.file(file_path, type="mayaAscii", open=True, force=True)
 
 def compare_shaders():
     shader_groups = cmds.ls(type="shadingEngine")
