@@ -15,5 +15,4 @@ def select_keyed():
             if keyed > 0:
                 cmds.select(transform_node, add=True)
         else:
-            print("{}'s nodeType isn't camera or nubrsCurve".format(transform_node))
-
+            print("{}'s nodeType isn't camera or nurbsCurve".format(transform_node))
