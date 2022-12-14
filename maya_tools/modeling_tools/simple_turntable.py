@@ -43,8 +43,8 @@ def frame_camera_to_asset(camera_node=None):
     cmds.select(meshes)
     pm.viewFit(camera_node, all=False, fitFactor=.98)
 
-    cam_translateZ = cmds.getAttr(camera_node + ".translateZ")
-    cam_translateY = cmds.getAttr(camera_node + ".translateY")
+    cam_translateZ = cmds.getAttr("{}.translateZ".format(camera_node))
+    cam_translateY = cmds.getAttr("{}.translateY".format(camera_node))
 
     print("Creating, scaling, and moving turntable control")
     turntable_ctrl = cmds.circle(name="Turntable_ctrl", normal=(0, 1, 0), constructionHistory=False)
@@ -63,7 +63,7 @@ def add_cam_ring_animation(control_ring):
     """
     print("Animating turntable control")
     cmds.setKeyframe(control_ring, attribute="rotate", time=1)
-    cmds.setAttr(control_ring[0] + ".rotateY", 360)
+    cmds.setAttr("{}.rotateY".format(control_ring[0]), 360)
     cmds.setKeyframe(control_ring, attribute="rotate", time=360)
     return
 
@@ -75,7 +75,7 @@ def add_lgt_animation(lgt_grp):
     """
     print("Animating {}".format(lgt_grp))
     cmds.setKeyframe(lgt_grp, attribute="rotate", time=360)
-    cmds.setAttr(lgt_grp + ".rotateY", 360)
+    cmds.setAttr("{}.rotateY".format(lgt_grp), 360)
     cmds.setKeyframe(lgt_grp, attribute="rotate", time=720)
     return
 

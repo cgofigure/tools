@@ -1,5 +1,5 @@
 import maya.cmds as cmds
-from maya_tools import transfer_xform as tx
+from maya_tools.anim_tools import transfer_xform as tx
 
 def transfer_keys(source, target):
     for i in range(0, len(source)):
