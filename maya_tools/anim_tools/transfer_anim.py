@@ -8,7 +8,7 @@ def get_keys(obj):
         keys(list): all the keys on the object
     """
     key_frames = cmds.keyframe(obj, query=True)
-    if not(key_frames):
+    if not key_frames:
         keys = None
         print("No keyframes on : {}".format(obj))
     else:
@@ -56,7 +56,7 @@ def get_and_set_attributes(source, target, time=None, key_frame=False):
     return
 
 def transfer_attributes(source, target):
-    """ Transfers attribtues from the source ot the target, keys the target as needed
+    """ Transfers attributes from the source ot the target, keys the target as needed
     Args:
         source(str): name of the object you want to transfer keyable attributes from
         target(str): name of the object you want to transfer keyable attributes to
@@ -69,7 +69,7 @@ def transfer_attributes(source, target):
     if target_keys:
         print("{} has keys, removing them to perform a clean transfer.".format(target))
         cmds.cutKey(target)
-    if not(source_keys):
+    if not source_keys:
         print("No keys, transferring attributes to : {}".format(target))
         get_and_set_attributes(source, target)
     else:
@@ -87,17 +87,17 @@ def transfer_anim(source=None, targets=None):
         targets(str/list): name or list of objects you want to transfer keys from, defaults to your second selection
     """
     print("Starting Animation Transfer")
-    if (source is None) or (targets is None):
+    if source is None or targets is None:
         cur_sel = cmds.ls(selection=True)
         if not cur_sel:
-            LOGGER.warning("Don't have a source or target to transfer anim. Returning...")
+            print("Don't have a source or target to transfer anim. Returning...")
             return
         if not source:
             source = str(cur_sel.pop(0))
             print("Setting the source as : {}".format(source))
         if not targets:
             if not cur_sel:
-                LOGGER.warning("Don't have a valid target to transfer too. Returning...")
+                print("Don't have a valid target to transfer too. Returning...")
                 return
             targets = cur_sel
 
