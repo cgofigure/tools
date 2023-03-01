@@ -1,5 +1,6 @@
 import maya.cmds as cmds
 
+
 def get_keys(obj):
     """ Gets the keyframes of an object
     Args:
@@ -15,6 +16,7 @@ def get_keys(obj):
         keys = list(set(key_frames))
         print("Keys : {}".format(keys))
     return keys
+
 
 def get_and_set_attributes(source, target, time=None, key_frame=False):
     """ Gets the source objects keyable attributes to apply.
@@ -55,6 +57,7 @@ def get_and_set_attributes(source, target, time=None, key_frame=False):
     print("Attributes applied : {}".format(target))
     return
 
+
 def transfer_attributes(source, target):
     """ Transfers attributes from the source ot the target, keys the target as needed
     Args:
@@ -78,6 +81,7 @@ def transfer_attributes(source, target):
             get_and_set_attributes(source, target, time=key, key_frame=True)
 
     print("Attribute Transfer Complete : {} >>> {}".format(source, target))
+
 
 def transfer_anim(source=None, targets=None):
     """ Provide a string or list of objects for the source and target to transfer animation. If none, will default to
