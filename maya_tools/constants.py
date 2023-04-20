@@ -1,4 +1,4 @@
-ASSET_GROUPS = [
+ASSET_GRPS = [
     "Meshes",
     "Rig",
     "Lights"

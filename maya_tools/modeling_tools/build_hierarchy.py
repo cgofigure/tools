@@ -7,17 +7,17 @@ def build_hierarchy(asset_name=None):
     Args:
         asset_name(str): name of the parent group, defaults to the file name if None
     """
-    # if package name is not defined, will name it based on the file name
+    # desired list of groups we want to create
+    asset_grps = constants.ASSET_GRPS
+
+    ## Checks the file name if an asset_name is not given
     if not asset_name:
         asset_name = os.path.basename(cmds.file(sceneName=True, query=True))
 
-    # desired list of groups we want to create
-    asset_groups = constants.ASSET_GROUPS
+    ## Creates the source group
+    source_grp = cmds.group(asset_name[:-3])
 
-    # creates the groups and names them
-    for asset_group in asset_groups:
-        cmds.CreateEmptyGroup()
-        cmds.rename(asset_group)
+    # Creates and parents the asset groups to the source group
+    for asset_grp in asset_grps:
+        cmds.group(name=asset_grp, parent=source_grp, empty=True)
 
-    # groups our created groups and names the group based on the scene
-    cmds.group(asset_name[:-3], asset_groups)
