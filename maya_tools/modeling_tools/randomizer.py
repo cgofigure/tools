@@ -4,9 +4,9 @@ import random
 def rotate_selection(x=False, y=True, z=False):
     """ Randomly rotates your selected objects
     Args:
-        x(bool):
-        y(bool):
-        z(bool):
+        x(bool): sets axis to a random value if True
+        y(bool): sets axis to a random value if True
+        z(bool): sets axis to a random value if True
     """
     axis_list = []
 
