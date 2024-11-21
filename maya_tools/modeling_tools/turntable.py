@@ -50,7 +50,7 @@ def frame_camera_to_asset(camera_node=None):
     # Creates the turntable control, moves it to the Camera's translate y and
     turntable_ctrl = cmds.circle(name=constants.TURNTABLE_CTRL, normal=(0, 1, 0), constructionHistory=False)
 
-    # Scales the control tot he Camera's translate z and parent constrains the Camera
+    # Scales the control to the Camera's translate z and parent constrains the Camera
     cmds.scale(cam_translateZ, cam_translateZ, cam_translateZ, turntable_ctrl[0])
     cmds.move(0, cam_translateY, 0, turntable_ctrl[0])
     cmds.parentConstraint(turntable_ctrl, camera_node, maintainOffset=True)

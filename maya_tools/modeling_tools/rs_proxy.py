@@ -1,4 +1,4 @@
-import maya.cmds as cmds
+2import maya.cmds as cmds
 
 def find_xform_geo_nodes():
     affected_proxies = []
