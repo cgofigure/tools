@@ -43,7 +43,7 @@ def frame_camera_to_asset(camera_node=None):
     cmds.select(meshes)
     pm.viewFit(camera_node, all=False, fitFactor=.98)
 
-    # Get's Camera's translate Z and Y
+    # Gets Camera's translate Z and Y
     cam_translateZ = cmds.getAttr(camera_node + ".translateZ")
     cam_translateY = cmds.getAttr(camera_node + ".translateY")
 

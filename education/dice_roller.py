@@ -14,5 +14,3 @@ def roll(sides=None, times=1):
     total_roll = sum(roll_value)
 
     return total_roll
-
-print(roll(sides=12, times=2))

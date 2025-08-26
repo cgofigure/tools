@@ -8,3 +8,5 @@ def quadratic():
 
     print(root_a)
     print(root_b)
+
+quadratic()
