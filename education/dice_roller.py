@@ -13,5 +13,4 @@ def roll(sides=None, times=1):
 
     total_roll = sum(roll_value)
 
-    print("Dummy")
     return total_roll
