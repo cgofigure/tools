@@ -22,7 +22,7 @@ def get_and_set_attributes(source, target, time=None, key_frame=False):
     """ Gets the source objects keyable attributes to apply.
         Args:
             source(str): name of the object that attributes will be sourced from
-            target(str): name of the object that the sourced attribtues will be applied to
+            target(str): name of the object that the sourced attributes will be applied to
             time(float): time/keyframe to pull the attribute data from, default is None
             key_frame(bool): set a key on the given time, default is False
     """

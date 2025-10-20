@@ -23,7 +23,7 @@ def check_meshes_without_shaders():
         children = cmds.listRelatives(obj, children=True) or []
         shader = cmds.listConnections(children[0], type="shadingEngine")
         if not shader:
-            print(obj + " doesn't have shader assigned.")
+            print("{} doesn't have shader assigned.".format(obj))
 
 def check_unassigned_shaders():
     shading_groups = cmds.ls(type="shadingEngine")
@@ -38,9 +38,7 @@ def check_unassigned_shaders():
     shaders = list(dict.fromkeys(unassigned_shaders))
 
     for shader in shaders:
-        if shader == "initialParticleSE":
-            continue
-        elif shader == "initialShadingGroup":
+        if shader == "initialParticleSE" or shader == "initialShadingGroup":
             continue
         else:
             print(shader)

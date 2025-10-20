@@ -4,7 +4,7 @@ import pymel.core as pm
 
 def create_turntable_lights(grp_name="Turntable_Light_grp", key_intensity=1, fill_intensity=.5, back_intensity=.2,
                             lgt_scale=50):
-    """ Creates a key, fill, and back light, as well as, a group to hold them
+    """ Creates a group, key, fill, and back lights
     Args:
         grp_name(str): the name of the group for the lights
         key_intensity(float): key light intensity
@@ -89,7 +89,7 @@ def create_turntable(start_frame=1, end_frame=720):
     # Set start and end times on the timeline
     cmds.playbackOptions(min=start_frame, max=end_frame)
 
-    # Create lights, camera, control, and animate them
+    # Create lights, control, and animate them
     turntable_light_grp = create_turntable_lights()
     cam_ring_control = frame_camera_to_asset(turntable_cam)
     add_cam_ring_animation(cam_ring_control)
